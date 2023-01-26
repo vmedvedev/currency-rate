@@ -12,11 +12,6 @@ export class CurrenciesResolver {
     return this.currenciesService.findAll();
   }
 
-  @Query(() => Currency, { name: 'currency' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.currenciesService.findOne(id);
-  }
-
   @Query(() => Number, { name: 'currencyPrice' })
   async currencyPrice(@Args('currency') currency: CurrenciesEnum) {
     return await this.currenciesService.fetchCurrencyPrice(currency);

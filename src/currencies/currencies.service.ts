@@ -20,20 +20,16 @@ export class CurrenciesService {
     private readonly configService: ConfigService,
   ) {}
 
-  async create(createCurrencyInput: CreateCurrencyInput) {
+  async create(createCurrencyInput: CreateCurrencyInput): Promise<Currency> {
     const newCurrency = this.currencyRepository.create(createCurrencyInput);
     return await this.currencyRepository.save(newCurrency);
   }
 
-  async findAll() {
+  async findAll(): Promise<Currency[]> {
     return await this.currencyRepository.find();
   }
 
-  async findOne(id: number) {
-    return await this.currencyRepository.findOneBy({ id });
-  }
-
-  async syncCurrencyPrice(currencyName: CurrenciesEnum) {
+  async syncCurrencyPrice(currencyName: CurrenciesEnum): Promise<void> {
     this.logger.debug(`Starting sync ${currencyName} price...`);
     try {
       const price = await this.fetchCurrencyPrice(currencyName);
