@@ -1,6 +1,7 @@
-import { Resolver, Query, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { CurrenciesService } from './currencies.service';
 import { Currency } from './graphql/currency.type';
+import { CurrenciesArgs } from './graphql/currencies-args.type';
 import { CurrenciesEnum } from './currencies.enum';
 
 @Resolver(() => Currency)
@@ -8,8 +9,8 @@ export class CurrenciesResolver {
   constructor(private readonly currenciesService: CurrenciesService) {}
 
   @Query(() => [Currency], { name: 'currencies' })
-  findAll() {
-    return this.currenciesService.findAll();
+  findAll(@Args() currenciesArgs: CurrenciesArgs) {
+    return this.currenciesService.findAll(currenciesArgs);
   }
 
   @Query(() => Number, { name: 'currencyPrice' })

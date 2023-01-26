@@ -10,7 +10,4 @@ export class Currency {
 
   @Field()
   createdAt: Date;
-
-  @Field()
-  updatedAt: Date;
 }

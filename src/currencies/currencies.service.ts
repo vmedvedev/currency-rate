@@ -8,6 +8,7 @@ import { AxiosError } from 'axios';
 import { ConfigService } from '@nestjs/config';
 import { catchError, firstValueFrom } from 'rxjs';
 import { CurrenciesEnum } from './currencies.enum';
+import { CurrenciesArgs } from './graphql/currencies-args.type';
 
 @Injectable()
 export class CurrenciesService {
@@ -25,8 +26,17 @@ export class CurrenciesService {
     return await this.currencyRepository.save(newCurrency);
   }
 
-  async findAll(): Promise<Currency[]> {
-    return await this.currencyRepository.find();
+  async findAll(currenciesArgs: CurrenciesArgs): Promise<Currency[]> {
+    const { currency, take, skip } = currenciesArgs;
+
+    const [result] = await this.currencyRepository.findAndCount({
+      where: { currency },
+      order: { createdAt: 'DESC' },
+      take: take,
+      skip: skip,
+    });
+
+    return result;
   }
 
   async syncCurrencyPrice(currencyName: CurrenciesEnum): Promise<void> {

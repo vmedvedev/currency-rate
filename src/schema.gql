@@ -6,7 +6,6 @@ type Currency {
   currency: String!
   price: Float!
   createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 """
