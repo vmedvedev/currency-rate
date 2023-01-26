@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { CurrenciesModule } from './currencies/currencies.module';
 import { Currency } from './currencies/entities/currency.entity';
+import { JobsService } from './jobs/jobs.service';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -34,8 +36,9 @@ import { Currency } from './currencies/entities/currency.entity';
       inject: [ConfigService],
     }),
     CurrenciesModule,
+    JobsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JobsService],
 })
 export class AppModule {}
