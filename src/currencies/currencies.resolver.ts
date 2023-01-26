@@ -1,6 +1,6 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { CurrenciesService } from './currencies.service';
-import { Currency } from './entities/currency.entity';
+import { Currency } from './graphql/currency.type';
 
 @Resolver(() => Currency)
 export class CurrenciesResolver {

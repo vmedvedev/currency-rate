@@ -1,16 +1,25 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@ObjectType()
+@Entity()
 export class Currency {
-  @Field()
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column({ nullable: false, type: 'varchar', length: 250, default: 'BTCUSDT' })
   currency: string;
 
-  @Field()
+  @Column({ nullable: false, type: 'decimal', default: 0 })
   price: number;
 
-  @Field()
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @Field()
+  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 }

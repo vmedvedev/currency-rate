@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Currency } from './entities/currency.entity';
 import { CreateCurrencyInput } from './dto/create-currency.input';
-import { UpdateCurrencyInput } from './dto/update-currency.input';
 
 @Injectable()
 export class CurrenciesService {
-  create(createCurrencyInput: CreateCurrencyInput) {
-    return 'This action adds a new currency';
+  constructor(
+    @InjectRepository(Currency)
+    private readonly currencyRepository: Repository<Currency>,
+  ) {}
+
+  async create(createCurrencyInput: CreateCurrencyInput) {
+    const newCurrency = this.currencyRepository.create(createCurrencyInput);
+    return await this.currencyRepository.save(newCurrency);
   }
 
-  findAll() {
-    return `This action returns all currencies`;
+  async findAll() {
+    return await this.currencyRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} currency`;
-  }
-
-  update(id: number, updateCurrencyInput: UpdateCurrencyInput) {
-    return `This action updates a #${id} currency`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} currency`;
+  async findOne(id: number) {
+    return await this.currencyRepository.findOneBy({ id });
   }
 }
