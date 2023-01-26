@@ -17,4 +17,5 @@ scalar DateTime
 type Query {
   currencies: [Currency!]!
   currency(id: Int!): Currency!
+  currencyPrice(currency: String!): Float!
 }

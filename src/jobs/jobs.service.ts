@@ -17,7 +17,7 @@ export class JobsService {
   startFetchJob() {
     const fetchIntervalSec =
       this.configService.get<number>('FETCH_INTERVAL_SEC');
-    console.log('startFetchJob');
+
     schedule.scheduleJob(`*/${fetchIntervalSec} * * * * *`, () => {
       this.logger.log('Starting fetch job.');
       try {

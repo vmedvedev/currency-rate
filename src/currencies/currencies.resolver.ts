@@ -1,6 +1,7 @@
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { CurrenciesService } from './currencies.service';
 import { Currency } from './graphql/currency.type';
+import { CurrenciesEnum } from './currencies.enum';
 
 @Resolver(() => Currency)
 export class CurrenciesResolver {
@@ -14,5 +15,10 @@ export class CurrenciesResolver {
   @Query(() => Currency, { name: 'currency' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.currenciesService.findOne(id);
+  }
+
+  @Query(() => Number, { name: 'currencyPrice' })
+  async currencyPrice(@Args('currency') currency: CurrenciesEnum) {
+    return await this.currenciesService.fetchCurrencyPrice(currency);
   }
 }
