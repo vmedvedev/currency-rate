@@ -13,7 +13,7 @@ export class User {
   @Column({ nullable: false, type: 'varchar', length: 250 })
   username: string;
 
-  @Column({ nullable: false, type: 'varchar', length: 250 })
+  @Column({ nullable: false, type: 'varchar', length: 256 })
   password: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })

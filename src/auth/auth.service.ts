@@ -2,6 +2,7 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginArgs } from './graphql/login-args.type';
+import { hashPassword } from '../utils';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
   async validateUser(username: string, pass: string): Promise<boolean> {
     this.logger.debug(`Validate user ${username}`);
     const user = await this.usersService.findOne(username);
-    return user && user.password === pass;
+    return user && user.password === hashPassword(pass);
   }
 
   async login({ username, password }: LoginArgs) {

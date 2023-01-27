@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { CurrenciesService } from '../currencies/currencies.service';
 import { CurrenciesEnum } from '../currencies/currencies.enum';
 import { UsersService } from '../users/users.service';
+import { hashPassword } from '../utils';
 
 @Injectable()
 export class JobsService {
@@ -36,7 +37,10 @@ export class JobsService {
 
     if (!user) {
       this.logger.debug('Creating Guest user.');
-      this.usersService.create({ username: 'guest', password: 'guest' });
+      this.usersService.create({
+        username: 'guest',
+        password: hashPassword('guest'),
+      });
     }
   }
 }
