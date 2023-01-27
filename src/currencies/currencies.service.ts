@@ -21,7 +21,9 @@ export class CurrenciesService {
     private readonly configService: ConfigService,
   ) {}
 
-  async create(createCurrencyInput: CreateCurrencyInput): Promise<Currency> {
+  async create(
+    createCurrencyInput: CreateCurrencyInput,
+  ): Promise<Currency | null> {
     const newCurrency = this.currencyRepository.create(createCurrencyInput);
     return await this.currencyRepository.save(newCurrency);
   }

@@ -3,6 +3,7 @@ import * as schedule from 'node-schedule';
 import { ConfigService } from '@nestjs/config';
 import { CurrenciesService } from '../currencies/currencies.service';
 import { CurrenciesEnum } from '../currencies/currencies.enum';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class JobsService {
@@ -10,7 +11,9 @@ export class JobsService {
   constructor(
     private readonly configService: ConfigService,
     private readonly currenciesService: CurrenciesService,
+    private readonly usersService: UsersService,
   ) {
+    this.createGuestUserJob();
     this.startFetchJob();
   }
 
@@ -26,5 +29,14 @@ export class JobsService {
         this.logger.error(e);
       }
     });
+  }
+
+  async createGuestUserJob() {
+    const user = await this.usersService.findOne('guest');
+
+    if (!user) {
+      this.logger.debug('Creating Guest user.');
+      this.usersService.create({ username: 'guest', password: 'guest' });
+    }
   }
 }

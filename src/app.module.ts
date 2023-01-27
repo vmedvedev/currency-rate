@@ -8,8 +8,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { CurrenciesModule } from './currencies/currencies.module';
 import { Currency } from './currencies/entities/currency.entity';
+import { User } from './users/entities/user.entity';
 import { JobsService } from './jobs/jobs.service';
 import { JobsModule } from './jobs/jobs.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -29,12 +32,14 @@ import { JobsModule } from './jobs/jobs.module';
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
-        entities: [Currency],
+        entities: [Currency, User],
         autoLoadEntities: true,
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
+    AuthModule,
+    UsersModule,
     CurrenciesModule,
     JobsModule,
   ],
