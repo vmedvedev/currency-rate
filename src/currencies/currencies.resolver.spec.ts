@@ -10,19 +10,19 @@ import { CurrenciesEnum } from './currencies.enum';
 
 const currencies = [
   {
-    currency: 'BTCUSDT',
+    currency: CurrenciesEnum.BTCUSDT,
     price: 22918.62125279,
     createdAt: '2023-01-27T14:12:25.352Z',
   },
   {
-    currency: 'BTCUSDT',
+    currency: CurrenciesEnum.BTCUSDT,
     price: 22918.91576787,
     createdAt: '2023-01-27T14:12:20.366Z',
   },
 ];
 
 const currency = {
-  currency: 'BTCUSDT',
+  currency: CurrenciesEnum.BTCUSDT,
   price: 22918.91576787,
   createdAt: '2023-01-27T14:12:20.366Z',
 };
@@ -58,7 +58,11 @@ describe('CurrenciesResolver', () => {
   describe('findAll()', () => {
     it('should return an array of currencies', () => {
       expect(
-        resolver.findAll({ currency: 'BTCUSDT', take: 25, skip: 0 }),
+        resolver.findAll({
+          currency: CurrenciesEnum.BTCUSDT,
+          take: 25,
+          skip: 0,
+        }),
       ).resolves.toEqual(currencies);
     });
   });
