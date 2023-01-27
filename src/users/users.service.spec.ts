@@ -5,17 +5,6 @@ import { UsersService } from './users.service';
 import { Repository } from 'typeorm';
 import { hashPassword } from '../utils';
 
-const userArray = [
-  {
-    username: 'username#1',
-    password: hashPassword('password#1'),
-  },
-  {
-    username: 'username#2',
-    password: hashPassword('password#2'),
-  },
-];
-
 const oneUser = {
   username: 'username#1',
   password: hashPassword('password#1'),
