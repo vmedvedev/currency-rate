@@ -4,20 +4,31 @@ BTCUSDT price synchronizer.
 
 A server app which periodically fetch the BTCUSDT price into database and exposes api with exchange rate history and current rate.
 
-## Installation
-
-```bash
-$ npm install
-```
-
 ## Running the app
 
-* Run PostgreSQL with Docker
+Host: http://localhost:3000
+
+* Run with Docker
+
+```bash
+docker compose build
+```
+
 ```bash
 docker compose up
 ```
 
 * Run NodeJS app
+
+Run PostgreSQL in Docker
+```bash
+docker run -it --env-file .env -v $(pwd)/db:/var/lib/postgresql/data --rm --name db -p 5432:5432 postgres:15
+```
+
+```bash
+$ npm install
+```
+
 ```bash
 # development
 $ npm run start
@@ -102,9 +113,6 @@ HTTP HEADERS
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
 
 # test coverage
 $ npm run test:cov

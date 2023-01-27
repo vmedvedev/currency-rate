@@ -8,6 +8,22 @@ services:
       - '5432:5432'
     volumes: 
       - ./db:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    env_file: .env
+    environment:
+       - POSTGRES_HOST=db
+    volumes:
+      - ./package.json:/usr/src/app/package.json
+      - ./package-lock.json:/usr/src/app/package-lock.json
+      - ./src:/usr/src/app/src
+    depends_on:
+      - db
+
 volumes:
   db:
     driver: local
