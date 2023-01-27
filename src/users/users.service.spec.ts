@@ -1,32 +1,75 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { UserDto } from './dto/user.dto';
+import { Repository } from 'typeorm';
 import { hashPassword } from '../utils';
 
-describe('UsersService', () => {
+const userArray = [
+  {
+    username: 'username#1',
+    password: hashPassword('password#1'),
+  },
+  {
+    username: 'username#2',
+    password: hashPassword('password#2'),
+  },
+];
+
+const oneUser = {
+  username: 'username#1',
+  password: hashPassword('password#1'),
+};
+
+describe('UserService', () => {
   let service: UsersService;
+  let repository: Repository<User>;
 
   beforeEach(async () => {
-    const moduleRef: TestingModule = await Test.createTestingModule({
-      providers: [UsersService],
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersService,
+        {
+          provide: getRepositoryToken(User),
+          useValue: {
+            find: jest.fn().mockResolvedValue(userArray),
+            findOneBy: jest.fn().mockResolvedValue(oneUser),
+            create: jest.fn().mockResolvedValue(oneUser),
+            save: jest.fn().mockResolvedValue(oneUser),
+          },
+        },
+      ],
     }).compile();
 
-    service = moduleRef.get<UsersService>(UsersService);
+    service = module.get<UsersService>(UsersService);
+    repository = module.get<Repository<User>>(getRepositoryToken(User));
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  const password = hashPassword('guest');
+  describe('create()', () => {
+    it('should successfully insert a user', () => {
+      const oneUser = {
+        username: 'username#1',
+        password: hashPassword('password#1'),
+      };
 
-  it.each`
-    name       | returnVal
-    ${'guest'} | ${{ id: 1, username: 'guest', password }}
-  `(
-    'should call findOne for $name and return $returnVal',
-    async ({ name, returnVal }: { name: string; returnVal: UserDto }) => {
-      expect(await service.findOne(name)).toEqual(returnVal);
-    },
-  );
+      expect(
+        service.create({
+          username: 'username#1',
+          password: hashPassword('password#1'),
+        }),
+      ).resolves.toEqual(oneUser);
+    });
+  });
+
+  describe('findOne()', () => {
+    it('should get a single user', () => {
+      const repoSpy = jest.spyOn(repository, 'findOneBy');
+      expect(service.findOne('username#1')).resolves.toEqual(oneUser);
+      expect(repoSpy).toBeCalledWith({ username: 'username#1' });
+    });
+  });
 });
