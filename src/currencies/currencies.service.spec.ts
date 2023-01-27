@@ -5,22 +5,23 @@ import { CurrenciesService } from './currencies.service';
 import { HttpService } from '@nestjs/axios';
 jest.mock('@nestjs/axios');
 import { ConfigService } from '@nestjs/config';
+import { CurrenciesEnum } from './currencies.enum';
 
 const currencies = [
   {
-    currency: 'BTCUSDT',
+    currency: CurrenciesEnum.BTCUSDT,
     price: 22918.62125279,
     createdAt: '2023-01-27T14:12:25.352Z',
   },
   {
-    currency: 'BTCUSDT',
+    currency: CurrenciesEnum.BTCUSDT,
     price: 22918.91576787,
     createdAt: '2023-01-27T14:12:20.366Z',
   },
 ];
 
 const currency = {
-  currency: 'BTCUSDT',
+  currency: CurrenciesEnum.BTCUSDT,
   price: 22918.91576787,
   createdAt: '2023-01-27T14:12:20.366Z',
 };
@@ -61,7 +62,11 @@ describe('CurrenciesService', () => {
   describe('findAll()', () => {
     it('should return an array of currencies', () => {
       expect(
-        service.findAll({ currency: 'BTCUSDT', take: 25, skip: 0 }),
+        service.findAll({
+          currency: CurrenciesEnum.BTCUSDT,
+          take: 25,
+          skip: 0,
+        }),
       ).resolves.toEqual(currencies);
     });
   });
